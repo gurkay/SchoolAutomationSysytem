@@ -5,7 +5,7 @@
  */
 package Views;
 
-import Controllers.CoursesController;
+
 import Controllers.InstructionOfCourseController;
 import Models.CoursesDbModel;
 import Models.DatabaseModel;
@@ -16,7 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 /**

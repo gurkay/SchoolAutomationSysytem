@@ -14,6 +14,24 @@ public class AddCourseStudentController {
     private int accountId;
     private int instructionOfCourseId;
     private short credit;
+    private float midterm;
+    private float finalExam;
+
+    public float getMidterm() {
+        return midterm;
+    }
+
+    public void setMidterm(float midterm) {
+        this.midterm = midterm;
+    }
+
+    public float getFinalExam() {
+        return finalExam;
+    }
+
+    public void setFinalExam(float finalExam) {
+        this.finalExam = finalExam;
+    }
 
     public int getAddCourseStudentId() {
         return addCourseStudentId;
