@@ -1,1 +1,1 @@
-# Achool Information System
+# School Information System
