@@ -6,10 +6,13 @@
 package Views;
 
 import Controllers.AccountController;
+import Controllers.AddCourseStudentController;
 import Controllers.GlobalConstants;
+import Models.AddCourseStudentModel;
 import Models.DatabaseModel;
 import Models.InstructionOfCourseDbModel;
 import Views.JFrameMainStudent;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -24,9 +27,7 @@ import javax.swing.table.TableRowSorter;
 public class JIntFrmAddCoursesOfStudent extends javax.swing.JInternalFrame {
 
     JFrameMainStudent jFrameMainStudent;
-    
-    
-    
+
     /**
      * Creates new form JIntFrmAddCoursesOfStudent
      */
@@ -42,9 +43,9 @@ public class JIntFrmAddCoursesOfStudent extends javax.swing.JInternalFrame {
      */
     public void showInstructorOfCourses() {
         try {
-            InstructionOfCourseDbModel instructionOfCourseDbModel = new InstructionOfCourseDbModel();
-            
-            List<Object[]> result = instructionOfCourseDbModel.instructorOfCoursesFindRecord();
+            AddCourseStudentModel addCourseStudentModel = new AddCourseStudentModel();
+
+            List<Object[]> result = addCourseStudentModel.instructorOfCoursesFindRecord();
 
             String arrayHeader[] = {"Account ID", "Courses Code", "Courses Name", "Courses Credit", "First Name", "Last Name"};
             DefaultTableModel table = new DefaultTableModel(arrayHeader, 0);
@@ -179,11 +180,11 @@ public class JIntFrmAddCoursesOfStudent extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Courses Name", "Courses Credit", "Curses Code"
+                "Curses Code", "Courses Name", "Curses Credit", "First Name", "Last Name"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -339,9 +340,26 @@ public class JIntFrmAddCoursesOfStudent extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        
-        if(Integer.parseInt(lblAccountID.getText()) > 0) {
-            
+        AddCourseStudentModel addCourseStudentModel = new AddCourseStudentModel();
+        AddCourseStudentController addCourseStudentController = new AddCourseStudentController();
+
+        if (Integer.parseInt(lblAccountID.getText()) > 0) {
+
+            addCourseStudentModel.deleteRecord(Integer.parseInt(lblAccountID.getText()));
+            DefaultTableModel model = (DefaultTableModel) tblCoursesOfStudentList.getModel();
+
+            for (int count = 0; count < model.getRowCount(); count++) {
+                addCourseStudentController.setAccountId(GlobalConstants.globalConst_account_id);
+                addCourseStudentController.setInstructionOfCourseId(addCourseStudentModel.isInstructionOfCourseID(
+                        model.getValueAt(count, 0).toString(), // Course Code 
+                        model.getValueAt(count, 3).toString(), // Instructor First Name
+                        model.getValueAt(count, 4).toString())); // Instructor Last Name
+                addCourseStudentController.setCredit(Short.valueOf(model.getValueAt(count, 2).toString()));
+                addCourseStudentController.setMidterm(0);
+                addCourseStudentController.setFinalExam(0);
+                
+                addCourseStudentModel.addCourseStudentRecord(addCourseStudentController);
+            }
         }
     }//GEN-LAST:event_btnAddActionPerformed
 

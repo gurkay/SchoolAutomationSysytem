@@ -105,7 +105,7 @@ public class InstructionOfCourseDbModel extends ConnectionDb {
 
         try {
             Connection conn = openConnection();
-            String query = "SELECT ioc.account_id, ioc.courses_code, c.courses_name, c.courses_credit, a.first_name, a.last_name "
+            String query = "SELECT ioc.account_id, ioc.courses_code, c.courses_name, c.courses_credit, a.first_name, a.last_name, ioc.instruction_of_course_id "
                     + "FROM instruction_of_course ioc "
                     + "JOIN account a ON a.account_id = ioc.account_id "
                     + "JOIN courses c ON ioc.courses_id = c.courses_id";
@@ -129,37 +129,7 @@ public class InstructionOfCourseDbModel extends ConnectionDb {
         return instructorOfCourses;
     }
     
-    public List<Object[]> instructorOfCoursesFindRecord() {
 
-        List<Object[]> instructorOfCourses = new ArrayList<Object[]>();
-
-        try {
-            Connection conn = openConnection();
-            String query = "SELECT ioc.account_id, ioc.courses_code, c.courses_name, c.courses_credit, a.first_name, a.last_name "
-                    + "FROM instruction_of_course ioc "
-                    + "JOIN account a ON a.account_id = ioc.account_id "
-                    + "JOIN courses c ON ioc.courses_id = c.courses_id";
-
-            PreparedStatement pst = conn.prepareStatement(query);
-            ResultSet rs = pst.executeQuery();
-
-            while (rs.next()) {
-                Object[] header = {"account_id", "courses_code", "courses_name", "courses_credit","first_name", "last_name"};
-
-                header[0] = rs.getInt("account_id");
-                header[1] = rs.getString("courses_code");
-                header[2] = rs.getString("courses_name");
-                header[3] = rs.getShort("courses_credit");
-                header[4] = rs.getString("first_name");
-                header[5] = rs.getString("last_name");
-                instructorOfCourses.add(header);
-            }
-            closeConnection();
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
-        return instructorOfCourses;
-    }
     
     public void deleteRecord(int accountID) {
 
