@@ -58,14 +58,14 @@ public class AddCourseStudentModel extends ConnectionDb{
             Connection conn = openConnection();
 
             String query = "INSERT INTO add_course_student(account_id, instruction_of_course_id, credit) VALUES(?, ?, ?)";
-            PreparedStatement pstAccount = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement pst = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
-            pstAccount.setInt(1, addCourseStudentController.getAccountId());
-            pstAccount.setInt(2, addCourseStudentController.getInstructionOfCourseId());
-            pstAccount.setShort(3, addCourseStudentController.getCredit());
+            pst.setInt(1, addCourseStudentController.getAccountId());
+            pst.setInt(2, addCourseStudentController.getInstructionOfCourseId());
+            pst.setShort(3, addCourseStudentController.getCredit());
 
-            pstAccount.executeUpdate();
-            pstAccount.close();
+            pst.executeUpdate();
+            pst.close();
 
             closeConnection();
 
@@ -124,7 +124,7 @@ public class AddCourseStudentModel extends ConnectionDb{
         
         try {
             Connection conn = openConnection();
-            String query = "SELECT ioc.account_id, ioc.courses_code, c.courses_name, c.courses_credit, a.first_name, a.last_name,ioc.instruction_of_course_id  "
+            String query = "SELECT ioc.account_id, ioc.courses_code, c.courses_name, c.courses_credit, a.first_name, a.last_name, ioc.instruction_of_course_id  "
                     + "FROM instruction_of_course ioc "
                     + "JOIN account a ON a.account_id = ioc.account_id "
                     + "JOIN courses c ON ioc.courses_id = c.courses_id "
@@ -136,13 +136,13 @@ public class AddCourseStudentModel extends ConnectionDb{
             pst.setString(3, instructorLastName);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                instructionOfCourseController.setAccountId(rs.getInt("account_id"));
+                instructionOfCourseController.setInstructionOfCourseId(rs.getInt("instruction_of_course_id"));
             }
 
             closeConnection();
         } catch (Exception e) {
             // TODO: handle exception
         }
-        return instructionOfCourseController.getAccountId();
+        return instructionOfCourseController.getInstructionOfCourseId();
     }    
 }
