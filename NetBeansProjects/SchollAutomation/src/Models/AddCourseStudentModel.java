@@ -18,8 +18,41 @@ import java.util.List;
  *
  * @author gurkay
  */
-public class AddCourseStudentModel extends ConnectionDb{
-    
+public class AddCourseStudentModel extends ConnectionDb {
+
+    public List<Object[]> coursesOfStudentList(int accountID) {
+
+        List<Object[]> instructorOfCourses = new ArrayList<Object[]>();
+
+        try {
+            Connection conn = openConnection();
+            String query = "SELECT ioc.courses_code, c.courses_name, c.courses_credit, a.first_name, a.last_name "
+                    + "FROM add_course_student acs "
+                    + "JOIN instruction_of_course ioc ON acs.instruction_of_course_id = ioc.instruction_of_course_id "
+                    + "JOIN account a ON a.account_id = ioc.account_id "
+                    + "JOIN courses c ON ioc.courses_id = c.courses_id "
+                    + "WHERE acs.account_id = ?";
+
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setInt(1, accountID);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Object[] header = {"courses_code", "courses_name", "courses_credit", "first_name", "last_name"};
+
+                header[0] = rs.getString("courses_code");
+                header[1] = rs.getString("courses_name");
+                header[2] = rs.getShort("courses_credit");
+                header[3] = rs.getString("first_name");
+                header[4] = rs.getString("last_name");
+                instructorOfCourses.add(header);
+            }
+            closeConnection();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return instructorOfCourses;
+    }
+
     public List<Object[]> instructorOfCoursesFindRecord() {
 
         List<Object[]> instructorOfCourses = new ArrayList<Object[]>();
@@ -35,7 +68,7 @@ public class AddCourseStudentModel extends ConnectionDb{
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
-                Object[] header = {"account_id", "courses_code", "courses_name", "courses_credit","first_name", "last_name", "instruction_of_course_id"};
+                Object[] header = {"account_id", "courses_code", "courses_name", "courses_credit", "first_name", "last_name", "instruction_of_course_id"};
 
                 header[0] = rs.getInt("account_id");
                 header[1] = rs.getString("courses_code");
@@ -52,7 +85,7 @@ public class AddCourseStudentModel extends ConnectionDb{
         }
         return instructorOfCourses;
     }
-    
+
     public void addCourseStudentRecord(AddCourseStudentController addCourseStudentController) {
         try {
             Connection conn = openConnection();
@@ -74,7 +107,7 @@ public class AddCourseStudentModel extends ConnectionDb{
             e.printStackTrace();
         }
     }
-    
+
     public void addCourseStudentPointRecord(AddCourseStudentController addCourseStudentController) {
         try {
             Connection conn = openConnection();
@@ -115,13 +148,12 @@ public class AddCourseStudentModel extends ConnectionDb{
             e.printStackTrace();
         }
     }
-    
+
     public int isInstructionOfCourseID(String courseCode, String instructorFirstName, String instructorLastName) {
-        
+
         InstructionOfCourseDbModel instructionOfCourseDbModel = new InstructionOfCourseDbModel();
         InstructionOfCourseController instructionOfCourseController = new InstructionOfCourseController();
-        
-        
+
         try {
             Connection conn = openConnection();
             String query = "SELECT ioc.account_id, ioc.courses_code, c.courses_name, c.courses_credit, a.first_name, a.last_name, ioc.instruction_of_course_id  "
@@ -144,5 +176,5 @@ public class AddCourseStudentModel extends ConnectionDb{
             // TODO: handle exception
         }
         return instructionOfCourseController.getInstructionOfCourseId();
-    }    
+    }
 }

@@ -33,8 +33,34 @@ public class JIntFrmAddCoursesOfStudent extends javax.swing.JInternalFrame {
      */
     public JIntFrmAddCoursesOfStudent() {
         initComponents();
+        showAddCourseOfStudent();
         showInstructorOfCourses();
         showLableInfoAccount();
+
+    }
+    
+    /**
+     * Show All Student Of Courses
+     */
+    public void showAddCourseOfStudent() {
+        try {
+            AddCourseStudentModel addCourseStudentModel = new AddCourseStudentModel();
+
+            List<Object[]> result = addCourseStudentModel.coursesOfStudentList(GlobalConstants.globalConst_account_id);
+            
+            String arrayHeader[] = {"Courses Code", "Courses Name", "Courses Credit", "First Name", "Last Name"};
+            DefaultTableModel table = new DefaultTableModel(arrayHeader, 0);
+            for (Object[] courses : result) {
+                table.addRow(courses);
+
+            }
+
+            tblCoursesOfStudentList.setModel(table);
+            jScrPnICoursesOfStudentList.setViewportView(tblCoursesOfStudentList);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getStackTrace());
+        }
 
     }
 
@@ -106,9 +132,7 @@ public class JIntFrmAddCoursesOfStudent extends javax.swing.JInternalFrame {
         tblCoursesOfStudentList = new javax.swing.JTable();
         pnlRecordButtonSet = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
-        btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
-        btnRefresh = new javax.swing.JButton();
         pnlScrollPaneInstructorOfCoursesList = new javax.swing.JPanel();
         jScrollPaneInstructorOfCoursesList = new javax.swing.JScrollPane();
         tblInstructorOfCoursesList = new javax.swing.JTable();
@@ -217,21 +241,17 @@ public class JIntFrmAddCoursesOfStudent extends javax.swing.JInternalFrame {
 
         pnlRecordButtonSet.setBackground(new java.awt.Color(244, 130, 17));
 
-        btnAdd.setText("Add");
+        btnAdd.setText("Save");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
             }
         });
 
-        btnUpdate.setText("Update");
-
-        btnDelete.setText("Delete");
-
-        btnRefresh.setText("Refresh");
-        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+        btnDelete.setText("Select Courses Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRefreshActionPerformed(evt);
+                btnDeleteActionPerformed(evt);
             }
         });
 
@@ -243,11 +263,7 @@ public class JIntFrmAddCoursesOfStudent extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlRecordButtonSetLayout.setVerticalGroup(
@@ -256,9 +272,7 @@ public class JIntFrmAddCoursesOfStudent extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(pnlRecordButtonSetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
-                    .addComponent(btnUpdate)
-                    .addComponent(btnDelete)
-                    .addComponent(btnRefresh))
+                    .addComponent(btnDelete))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -363,10 +377,6 @@ public class JIntFrmAddCoursesOfStudent extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRefreshActionPerformed
-
     private void tblCoursesOfStudentListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCoursesOfStudentListMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_tblCoursesOfStudentListMouseClicked
@@ -395,6 +405,12 @@ public class JIntFrmAddCoursesOfStudent extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_tblInstructorOfCoursesListMouseClicked
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        AddCourseStudentModel addCourseStudentModel = new AddCourseStudentModel();
+        addCourseStudentModel.deleteRecord(Integer.parseInt(lblAccountID.getText()));
+        showAddCourseOfStudent();
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
     /**
      * To Filter Table Row data info
      */
@@ -418,8 +434,6 @@ public class JIntFrmAddCoursesOfStudent extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnRefresh;
-    private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
