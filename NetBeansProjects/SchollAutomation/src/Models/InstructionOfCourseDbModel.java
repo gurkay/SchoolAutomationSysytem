@@ -98,6 +98,37 @@ public class InstructionOfCourseDbModel extends ConnectionDb {
         }
         return instructorOfCourses;
     }
+    
+    public List<Object[]> instOfCoursesFindRecord(int accountID) {
+
+        List<Object[]> instructorOfCourses = new ArrayList<Object[]>();
+
+        try {
+            Connection conn = openConnection();
+            String query = "SELECT ioc.instruction_of_course_id, c.courses_name, c.courses_credit, c.courses_code "
+                    + "FROM instruction_of_course ioc "
+                    + "JOIN courses c ON c.courses_code = ioc.courses_code "
+                    + "WHERE ioc.account_id = ?";
+
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setInt(1, accountID);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Object[] header = {"instruction_of_course_id", "courses_name", "courses_credit", "courses_code"};
+
+                header[0] = rs.getString("instruction_of_course_id");
+                header[1] = rs.getString("courses_name");
+                header[2] = rs.getShort("courses_credit");
+                header[3] = rs.getString("courses_code");
+                instructorOfCourses.add(header);
+            }
+            closeConnection();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return instructorOfCourses;
+    }
 
     public List<Object[]> instructorOfCoursesFindRecord(AccountController accountController) {
 

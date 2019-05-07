@@ -5,6 +5,7 @@
  */
 package Models;
 
+import Controllers.AddCourseStudentController;
 import Controllers.CoursesController;
 import Controllers.InstructionOfCourseController;
 import java.sql.Connection;
@@ -88,5 +89,28 @@ public class CoursesDbModel extends ConnectionDb {
             // TODO: handle exception
         }
         return coursesController.getCoursesId();
+    }
+
+    public void updateCourseRecord(CoursesController coursesController) {
+        try {
+            Connection conn = openConnection();
+
+            String query = "UPDATE courses SET courses_name = ?, courses_credit = ?, courses_code = ? WHERE courses_id = ?";
+            PreparedStatement pstAccount = conn.prepareStatement(query);
+
+            pstAccount.setString(1, coursesController.getCoursesName());
+            pstAccount.setShort(2, coursesController.getCoursesCredit());
+            pstAccount.setString(3, coursesController.getCoursesCode());
+            pstAccount.setInt(4, coursesController.getCoursesId());
+
+            pstAccount.executeUpdate();
+            pstAccount.close();
+
+            closeConnection();
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
     }
 }

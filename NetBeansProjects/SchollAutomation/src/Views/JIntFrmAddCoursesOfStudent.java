@@ -199,6 +199,12 @@ public class JIntFrmAddCoursesOfStudent extends javax.swing.JInternalFrame {
 
         jPnlCoursesOfStudent.setBackground(new java.awt.Color(242, 200, 119));
 
+        jScrPnICoursesOfStudentList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jScrPnICoursesOfStudentListMouseClicked(evt);
+            }
+        });
+
         tblCoursesOfStudentList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -277,6 +283,12 @@ public class JIntFrmAddCoursesOfStudent extends javax.swing.JInternalFrame {
         );
 
         pnlScrollPaneInstructorOfCoursesList.setBackground(new java.awt.Color(239, 160, 28));
+
+        jScrollPaneInstructorOfCoursesList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jScrollPaneInstructorOfCoursesListMouseClicked(evt);
+            }
+        });
 
         tblInstructorOfCoursesList.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -375,6 +387,7 @@ public class JIntFrmAddCoursesOfStudent extends javax.swing.JInternalFrame {
                 addCourseStudentModel.addCourseStudentRecord(addCourseStudentController);
             }
         }
+        JOptionPane.showMessageDialog(null, "Courses Saved");
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void tblCoursesOfStudentListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCoursesOfStudentListMouseClicked
@@ -408,8 +421,17 @@ public class JIntFrmAddCoursesOfStudent extends javax.swing.JInternalFrame {
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         AddCourseStudentModel addCourseStudentModel = new AddCourseStudentModel();
         addCourseStudentModel.deleteRecord(Integer.parseInt(lblAccountID.getText()));
+        JOptionPane.showMessageDialog(null, "Delete Courses");
         showAddCourseOfStudent();
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void jScrPnICoursesOfStudentListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrPnICoursesOfStudentListMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jScrPnICoursesOfStudentListMouseClicked
+
+    private void jScrollPaneInstructorOfCoursesListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPaneInstructorOfCoursesListMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jScrollPaneInstructorOfCoursesListMouseClicked
 
     /**
      * To Filter Table Row data info

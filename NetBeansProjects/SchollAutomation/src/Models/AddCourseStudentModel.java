@@ -52,6 +52,43 @@ public class AddCourseStudentModel extends ConnectionDb {
         }
         return instructorOfCourses;
     }
+    
+    public List<Object[]> coursesOfStudentListSelected(int instOfCourseID) {
+
+        List<Object[]> coursesOfStudentList = new ArrayList<Object[]>();
+
+        try {
+            Connection conn = openConnection();
+            String query = "SELECT acs.add_course_student_id ,ac.account_id, ac.first_name, ac.last_name, ioc.courses_code, c.courses_name, c.courses_credit, acs.midterm, acs.final " +
+                            "FROM add_course_student acs " +
+                            "JOIN instruction_of_course ioc ON acs.instruction_of_course_id = ioc.instruction_of_course_id " +
+                            "JOIN account ac ON ac.account_id = acs.account_id " +
+                            "JOIN courses c ON ioc.courses_id = c.courses_id " +
+                            "WHERE acs.instruction_of_course_id = ?";
+
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setInt(1, instOfCourseID);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Object[] header = {"add_course_student_id", "account_id", "first_name", "last_name", "courses_code", "courses_name", "courses_credit", "midterm", "final"};
+
+                header[0] = rs.getInt("add_course_student_id");
+                header[1] = rs.getInt("account_id");
+                header[2] = rs.getString("first_name");
+                header[3] = rs.getString("last_name");
+                header[4] = rs.getString("courses_code");
+                header[5] = rs.getString("courses_name");
+                header[6] = rs.getShort("courses_credit");
+                header[7] = rs.getFloat("midterm");
+                header[8] = rs.getFloat("final");
+                coursesOfStudentList.add(header);
+            }
+            closeConnection();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return coursesOfStudentList;
+    }
 
     public List<Object[]> instructorOfCoursesFindRecord() {
 
@@ -132,6 +169,29 @@ public class AddCourseStudentModel extends ConnectionDb {
         }
     }
 
+    public void updateCourseStudentPointRecord(AddCourseStudentController addCourseStudentController) {
+        try {
+            Connection conn = openConnection();
+
+            String query = "UPDATE add_course_student SET midterm = ?, final = ? WHERE add_course_student_id = ?";
+            PreparedStatement pstAccount = conn.prepareStatement(query);
+
+            
+            pstAccount.setFloat(1, addCourseStudentController.getMidterm());
+            pstAccount.setFloat(2, addCourseStudentController.getFinalExam());
+            pstAccount.setInt(3, addCourseStudentController.getAddCourseStudentId());
+
+            pstAccount.executeUpdate();
+            pstAccount.close();
+
+            closeConnection();
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+    }
+    
     public void deleteRecord(int accountID) {
 
         try {

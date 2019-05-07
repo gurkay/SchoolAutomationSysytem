@@ -8,6 +8,7 @@ package Views;
 import Models.DatabaseModel;
 import Controllers.AccountController;
 import Controllers.GlobalConstants;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -130,17 +131,22 @@ public class JFrameLoginView extends javax.swing.JFrame {
                             
                     if (!jFrameMainStudent.isVisible()) {
                         jFrameMainStudent.setVisible(true);
-                        jFrameMainStudent.setTitle(Integer.toString(accountController.getAccountId()));
 
                         GlobalConstants.globalConst_account_id = accountController.getAccountId();
                     }
                     break;
                 case 4:
-                    System.out.println("Lecturer");
+                    System.out.println("Instructor");
+                    JFrameMainInstructor jFrameMainInstructor = new JFrameMainInstructor();
+                            
+                    if (!jFrameMainInstructor.isVisible()) {
+                        jFrameMainInstructor.setVisible(true);
 
+                        GlobalConstants.globalConst_account_id = accountController.getAccountId();
+                    }
                     break;
                 default:
-                    System.out.println("Unknown User");
+                    JOptionPane.showMessageDialog(null, "Unknown Users");
                     break;
             }
 
